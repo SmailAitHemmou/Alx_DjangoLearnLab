@@ -1,3 +1,17 @@
 from django.contrib import admin
 
 # Register your models here.
+
+from .models import Book
+
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    # columns shown in the list page
+    list_display = ("title", "author", "publication_year")
+    # right-side filters
+    list_filter = ("author", "publication_year")
+    # top search box
+    search_fields = ("title", "author")
+    # optional niceties
+    ordering = ("title",)
+    list_per_page = 25
