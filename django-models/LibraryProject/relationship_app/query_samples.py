@@ -54,7 +54,7 @@ def books_in_library(library_name):
 def librarian_for_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        return library.librarian  # Access via OneToOneField reverse relation
+        return Librarian.objects.get(library=library) # Access via OneToOneField reverse relation
     except Library.DoesNotExist:
         return None
 
