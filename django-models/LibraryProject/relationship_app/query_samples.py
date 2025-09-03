@@ -34,20 +34,29 @@ django.setup()
 
 from relationship_app.models import Author, Book, Library, Librarian  # noqa: E402
 
+# Example: Query all books by a specific author
+def books_by_author(author_name):
+    try:
+        author = Author.objects.get(name=author_name)
+        return Book.objects.filter(author=author)
+    except Author.DoesNotExist:
+        return []
 
-def books_by_author(author_name: str):
-    """Return queryset of books for the given author name."""
-    return Book.objects.filter(author__name=author_name).only("id", "title").order_by("title")
+# Example: List all books in a library
+def books_in_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        return library.books.all()
+    except Library.DoesNotExist:
+        return []
 
-
-def books_in_library(library_name: str):
-    """Return queryset of books that belong to a given library name."""
-    return Book.objects.filter(libraries__name=library_name).only("id", "title").order_by("title")
-
-
-def librarian_for_library(library_name: str):
-    """Return the librarian instance for a given library name, or None."""
-    return Librarian.objects.filter(library__name=library_name).select_related("library").first()
+# Example: Retrieve the librarian for a library
+def librarian_for_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        return library.librarian  # Access via OneToOneField reverse relation
+    except Library.DoesNotExist:
+        return None
 
 
 def print_header(title: str):
