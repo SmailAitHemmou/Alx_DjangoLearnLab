@@ -5,7 +5,7 @@ from django.shortcuts import render
 # relationship_app/views.py
 from django.http import HttpResponse
 from django.views.generic import DetailView
-from .models import Book, Library
+from .models import Library
 
 # --- Function-based view: list all books ---
 def list_books(request):
