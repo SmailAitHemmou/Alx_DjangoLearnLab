@@ -14,8 +14,8 @@ urlpatterns = [
     path('admin-page/', admin_view, name='admin-page'),
     path('librarian-page/', librarian_view, name='librarian-page'),
     path('member-page/', member_view, name='member-page'),
-    path('books/add/', views.add_book, name='add_book'),
-    path('books/<int:pk>/edit/', views.edit_book, name='edit_book'),
+    path('add_book/', views.add_book, name='add_book'),
+    path('edit_book/', views.edit_book, name='edit_book'),
     path('books/<int:pk>/delete/', views.delete_book, name='delete_book'),
     path('', include('relationship_app.urls'))  # Your registration function view
 ]
