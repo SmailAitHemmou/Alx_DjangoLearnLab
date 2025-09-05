@@ -4,9 +4,10 @@ from . import views
 from django.contrib.auth.views import LoginView, LogoutView 
 from .views import admin_view, librarian_view, member_view
 from django.urls import include
+from .views import list_books
 
 urlpatterns = [
-    path("books/", views.list_books, name="list_books"),
+    path("books/", list_books, name="list_books"),
     path("libraries/<int:pk>/", views.LibraryDetailView.as_view(), name="library_detail"),
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
