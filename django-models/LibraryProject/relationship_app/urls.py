@@ -12,5 +12,8 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('admin-page/', admin_view, name='admin-page'),
     path('librarian-page/', librarian_view, name='librarian-page'),
-    path('member-page/', member_view, name='member-page'),  # Your registration function view
+    path('member-page/', member_view, name='member-page'),
+    path('books/add/', views.add_book, name='add_book'),
+    path('books/<int:pk>/edit/', views.edit_book, name='edit_book'),
+    path('books/<int:pk>/delete/', views.delete_book, name='delete_book'),  # Your registration function view
 ]
