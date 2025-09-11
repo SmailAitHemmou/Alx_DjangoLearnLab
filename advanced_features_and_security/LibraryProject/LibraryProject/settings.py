@@ -126,3 +126,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+# Protect against XSS attacks
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent the site from being rendered in a frame (clickjacking protection)
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent browsers from sniffing the content type
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Ensure CSRF cookies are sent over HTTPS only
+CSRF_COOKIE_SECURE = True
+
+# Ensure session cookies are sent over HTTPS only
+SESSION_COOKIE_SECURE = True
+
+# Force HTTPS for all requests
+SECURE_SSL_REDIRECT = True
+
+# Set HSTS headers for HTTPS (clients only connect via HTTPS)
+SECURE_HSTS_SECONDS = 3600  # adjust for production
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
