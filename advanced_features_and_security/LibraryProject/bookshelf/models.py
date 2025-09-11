@@ -41,3 +41,11 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
     
+    class CustomUser(AbstractUser):
+        date_of_birth = models.DateField(null=True, blank=True)
+        profile_photo = models.ImageField(upload_to='profiles/', null=True, blank=True)
+
+        def __str__(self):
+            return self.username
+        
+
