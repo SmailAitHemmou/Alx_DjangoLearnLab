@@ -1,0 +1,6 @@
+{% load static %}
+{% if user.profile_photo %}
+  <img src="{{ user.profile_photo.url }}" alt="{{ user.username }}" />
+{% else %}
+  <img src="{% static 'img/default-avatar.png' %}" alt="default" />
+{% endif %}
