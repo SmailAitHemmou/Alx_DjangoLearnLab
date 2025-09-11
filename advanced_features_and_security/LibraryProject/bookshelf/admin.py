@@ -1,4 +1,7 @@
 from django.contrib import admin
+from LibraryProject.accounts.admin import CustomUserAdmin
+from .models import CustomUser
+
 
 # Register your models here.
 
@@ -15,3 +18,5 @@ class BookAdmin(admin.ModelAdmin):
     # optional niceties
     ordering = ("title",)
     list_per_page = 25
+
+admin.site.register(CustomUser, CustomUserAdmin)
