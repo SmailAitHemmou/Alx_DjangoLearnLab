@@ -123,11 +123,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Use the custom user model
-AUTH_USER_MODEL = 'accounts.CustomUser'
-AUTH_USER_MODEL = 'bookshelf.CustomUser'
-# Media (for profile photos)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # if BASE_DIR is a Path
-# If BASE_DIR is a string, use: os.path.join(BASE_DIR, 'media')

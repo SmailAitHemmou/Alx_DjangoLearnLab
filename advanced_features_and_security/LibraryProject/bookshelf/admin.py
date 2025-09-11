@@ -1,8 +1,6 @@
 from django.contrib import admin
 from LibraryProject.accounts.admin import CustomUserAdmin
 from .models import CustomUser
-
-
 # Register your models here.
 
 from .models import Book
