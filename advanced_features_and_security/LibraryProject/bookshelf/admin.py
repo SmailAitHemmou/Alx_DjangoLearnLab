@@ -18,4 +18,4 @@ class BookAdmin(admin.ModelAdmin):
     ordering = ("title",)
     list_per_page = 25
 
-admin.site.register(CustomUser, CustomUserAdmin)
+    admin.site.register(CustomUser, CustomUserAdmin)
