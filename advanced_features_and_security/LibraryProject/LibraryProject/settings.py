@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bookshelf',
     'relationship_app',
     'accounts',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
@@ -155,3 +156,5 @@ SECURE_HSTS_PRELOAD = True
 SESSION_COOKIE_HTTPONLY = True          # JavaScript can't read the session cookie
 SESSION_COOKIE_SAMESITE = 'Lax'         # 'Strict' or 'Lax' depending on your app behavior
 CSRF_COOKIE_SAMESITE = 'Lax'            # helps mitigate CSRF in some flows
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
