@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2q!k4ve0q3-i$^3-3$v&o8=2r6_v(cjskeqtdxp2_e9xn047c%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'yourdomain.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'example.com', 'www.example.com']
 
 
 # Application definition
@@ -147,8 +147,11 @@ SESSION_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 
 # Set HSTS headers for HTTPS (clients only connect via HTTPS)
-SECURE_HSTS_SECONDS = 3600  # adjust for production
+SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-
+# extra cookie hardening
+SESSION_COOKIE_HTTPONLY = True          # JavaScript can't read the session cookie
+SESSION_COOKIE_SAMESITE = 'Lax'         # 'Strict' or 'Lax' depending on your app behavior
+CSRF_COOKIE_SAMESITE = 'Lax'            # helps mitigate CSRF in some flows
