@@ -15,3 +15,9 @@ This project demonstrates advanced API development using Django REST Framework.
 ## Permissions
 - Read access (list/retrieve) is available to all users.
 - Write access (create/update/delete) requires authentication.
+
+### Filtering, Searching, and Ordering
+
+- Filter books: `/api/books/?title=BookName&publication_year=2020`
+- Search books: `/api/books/?search=keyword`
+- Order books: `/api/books/?ordering=publication_year` or `/api/books/?ordering=-publication_year`
