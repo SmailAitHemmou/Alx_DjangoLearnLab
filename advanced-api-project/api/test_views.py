@@ -34,7 +34,12 @@ class BookAPITests(APITestCase):
 
     def setUp(self):
         # Use APIClient directly
-        self.client = APIClient()
+        # Create a test user
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+
+        # Create some test data
+        self.book1 = Book.objects.create(title="Book One", author="Author A", publication_year=2020)
+        self.book2 = Book.objects.create(title="Book Two", author="Author B", publication_year=2021)
 
     # -------------------------
     # Basic list & detail tests
@@ -71,18 +76,15 @@ class BookAPITests(APITestCase):
 
     def test_create_book_authenticated(self):
         """Authenticated user can create a book (201) and DB reflects it."""
-        self.client.force_authenticate(user=self.user)
-        url = reverse('book-create')
-        payload = {
-            'title': 'Created Book',
-            'publication_year': 2022,
-            'author': self.author1.pk
-        }
-        response = self.client.post(url, payload, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # Verify object was created in the DB
-        self.assertTrue(Book.objects.filter(title='Created Book').exists())
+          # ✅ Login before making request
+        self.client.login(username="testuser", password="testpass")
 
+        url = reverse('book-create')
+        data = {"title": "New Book", "author": "Author X", "publication_year": 2022}
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Book.objects.count(), 3)
     # -------------------------
     # Update tests (permission & data integrity)
     # -------------------------
@@ -94,12 +96,16 @@ class BookAPITests(APITestCase):
 
     def test_update_book_authenticated(self):
         """Authenticated user can update a book and DB is updated (200)."""
-        self.client.force_authenticate(user=self.user)
-        url = reverse('book-update', kwargs={'pk': self.book1.pk})
-        response = self.client.patch(url, {'title': 'Updated Title'}, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+       # ✅ Login before making request
+        self.client.login(username="testuser", password="testpass")
+
+        url = reverse('book-update', kwargs={"pk": self.book1.pk})
+        data = {"title": "Updated Book", "author": "Author A", "publication_year": 2025}
+        response = self.client.put(url, data)
+
+        self.assertEqual(response.status_code, 200)
         self.book1.refresh_from_db()
-        self.assertEqual(self.book1.title, 'Updated Title')
+        self.assertEqual(self.book1.title, "Updated Book")
 
     # -------------------------
     # Delete tests
