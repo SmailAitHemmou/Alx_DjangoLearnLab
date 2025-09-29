@@ -7,6 +7,7 @@ from .models import Post, Comment
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Q
 
 
 def post_list(request):
@@ -37,6 +38,19 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'blog/register.html', {'form': form})
+
+def post_search(request):
+    query = request.GET.get("q")
+    results = []
+
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) | 
+            Q(content__icontains=query) |     
+            Q(tags__name__icontains=query)
+        ).distinct()
+
+    return render(request, "blog/post_search.html", {"query": query, "results": results})
 
 
 @login_required
