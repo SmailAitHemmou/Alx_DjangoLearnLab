@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile, Post, Comment
+from taggit.forms import TagWidget 
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, help_text='Required')
@@ -32,12 +33,13 @@ class ProfileForm(forms.ModelForm):
         fields = ('bio', 'image')
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(required=False, label='Tags',
-            help_text='Separate tags with commas (e.g. django, python)')
 
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
+        widgets = {
+            'tags': TagWidget(),
+        }
 
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance')
