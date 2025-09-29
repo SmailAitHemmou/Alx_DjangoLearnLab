@@ -1,0 +1,8 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+header { background: #f4f4f4; padding: 1rem; margin-bottom: 1rem; }
+article { margin-bottom: 1.5rem; }
