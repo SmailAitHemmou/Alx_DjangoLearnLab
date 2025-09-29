@@ -2,12 +2,41 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-  <h2>{{ post.title }}</h2>
-  <p>By {{ post.author }} on {{ post.published_date|date:"M d, Y" }}</p>
-  <div>{{ post.content|linebreaks }}</div>
+  <article>
+    <h2>{{ post.title }}</h2>
+    <p>By {{ post.author }} — {{ post.published_date|date:"M d, Y H:i" }}</p>
+    <div>{{ post.content|linebreaks }}</div>
+  </article>
 
-  {% if user == post.author %}
-    <a href="{% url 'blog:post_update' post.pk %}">Edit</a> |
-    <a href="{% url 'blog:post_delete' post.pk %}">Delete</a>
-  {% endif %}
+  <section id="comments">
+    <h3>Comments ({{ post.comments.count }})</h3>
+
+    {% for comment in post.comments.all %}
+      <div class="comment" style="border-bottom:1px solid #ddd; padding:8px 0;">
+        <p><strong>{{ comment.author.username }}</strong> — <small>{{ comment.created_at|date:"M d, Y H:i" }}</small></p>
+        <div>{{ comment.content|linebreaks }}</div>
+        {% if user == comment.author %}
+          <p>
+            <a href="{% url 'blog:comment_update' post.pk comment.pk %}">Edit</a> |
+            <a href="{% url 'blog:comment_delete' post.pk comment.pk %}">Delete</a>
+          </p>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>No comments yet.</p>
+    {% endfor %}
+  </section>
+
+  <section id="add-comment">
+    <h3>Leave a comment</h3>
+    {% if user.is_authenticated %}
+      <form action="{% url 'blog:comment_create' post.pk %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}       {# form يجب أن يمرّر من view أو يمكن إنشاؤه في القالب #}
+        <button type="submit">Post Comment</button>
+      </form>
+    {% else %}
+      <p><a href="{% url 'blog:login' %}">Login</a> to leave a comment.</p>
+    {% endif %}
+  </section>
 {% endblock %}
