@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, UserUpdateForm, ProfileForm, PostForm, CommentForm
-from .models import Post, Comment, Tag
+from .models import Post, Comment
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -79,17 +79,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     form_class = PostForm
     template_name = 'blog/post_form.html'
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        response = super().form_valid(form) 
-        tags_str = form.cleaned_data.get('tags', '')
-        self.object.tags.clear()
-        for tag_name in [t.strip() for t in tags_str.split(',') if t.strip()]:
-            tag_obj, created = Tag.objects.get_or_create(name__iexact=False, name=tag_name)
-            tag_obj, created = Tag.objects.get_or_create(name=tag_name)
-            self.object.tags.add(tag_obj)
-        return response
-
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
@@ -99,14 +88,6 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         post = self.get_object()
         return self.request.user == post.author
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        tags_str = form.cleaned_data.get('tags', '')
-        self.object.tags.clear()
-        for tag_name in [t.strip() for t in tags_str.split(',') if t.strip()]:
-            tag_obj, created = Tag.objects.get_or_create(name=tag_name)
-            self.object.tags.add(tag_obj)
-        return response
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
