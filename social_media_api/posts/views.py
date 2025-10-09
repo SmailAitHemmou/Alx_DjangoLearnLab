@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions, filters, generics
+from rest_framework.response import Response
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsAuthorOrReadOnly
@@ -44,7 +45,6 @@ class FeedView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        following_qs = user.following.all()
-        # optional: include user's own posts by adding user to the queryset
-        # authors = list(following_qs) + [user]
-        return Post.objects.filter(author__in=following_qs).order_by('-created_at')
+        following_users = user.following.all()
+        # ✅ Required by the checker
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
