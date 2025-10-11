@@ -58,13 +58,12 @@ class LikePostView(generics.GenericAPIView):
     serializer_class = LikeSerializer
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
-        # prevent double-like using get_or_create
-        like, created = Like.objects.get_or_create(post=post, user=request.user)
+        post = generics.get_object_or_404(Post, pk=pk)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
         if not created:
             return Response({'detail': 'Already liked'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # create notification for post author (avoid notifying self)
         if post.author != request.user:
             Notification.objects.create(
                 recipient=post.author,
@@ -73,6 +72,7 @@ class LikePostView(generics.GenericAPIView):
                 target_content_type=ContentType.objects.get_for_model(post),
                 target_object_id=post.id
             )
+
         serializer = self.get_serializer(like)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -81,10 +81,9 @@ class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
-        like_qs = Like.objects.filter(post=post, user=request.user)
+        post = generics.get_object_or_404(Post, pk=pk)
+        like_qs = Like.objects.filter(user=request.user, post=post)
         if not like_qs.exists():
             return Response({'detail': "You haven't liked this post."}, status=status.HTTP_400_BAD_REQUEST)
         like_qs.delete()
-        # Optionally remove the corresponding notification (or mark it)
-        return Response({'detail': 'Unliked'}, status=status.HTTP_200_OK)
+        return Response({'detail': 'Unliked successfully'}, status=status.HTTP_200_OK)
