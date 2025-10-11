@@ -23,3 +23,11 @@ Authorization: Token <your_token>
 ## Notes
 - profile_picture stored in MEDIA_ROOT (configure in settings.py)
 - Use multipart/form-data when uploading images
+
+
+POST /api/posts/<id>/like/        -> like post (auth required)
+POST /api/posts/<id>/unlike/      -> unlike post (auth required)
+GET  /api/notifications/           -> list notifications (auth required)
+GET  /api/notifications/unread/    -> list unread notifications
+POST /api/notifications/<id>/read/ -> mark notification read
+POST /api/notifications/mark-all-read/ -> mark all notifications read
