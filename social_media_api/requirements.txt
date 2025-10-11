@@ -1,0 +1,6 @@
+gunicorn
+whitenoise
+psycopg2-binary        # if using Postgres
+django-storages[boto3] # only if you use S3 for static/media
+boto3                  # required by django-storages
+python-dotenv or django-environ  # optional for env management
